@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Welcome";
+
+    var iControllerType = typeof(IController);
+    var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
+        .Where(p => iControllerType.IsAssignableFrom(p)).ToList();
+}
+
+<h2>Welcome</h2>
+
+<ul>
+    @for (int i=0; i<ViewBag.Num; i++) {
+        <li>@ViewBag.Message</li>
+    }
+</ul>
+
+<ul>
+    @foreach (var type in types) {
+        <li>@type.Name - 
+            <pre>@String.Join("\n", type.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).ToList())</pre>
+        </li>
+    }
+</ul>
